@@ -1,0 +1,27 @@
+body{
+	background-image: url('../images/stockholm3.jpg');
+	background-position: center 70%;
+	background-size: cover;
+	height: 100vh;
+	max-width: 100vw;
+}
+
+#logo{
+	margin-top: 5%;
+	color: white;
+}
+
+#logo h1{
+	font-size: 5em;
+	color: white;
+	margin-left: 15%;
+}
+
+#logo p{
+	color: white;
+	font-size: 1.55em;
+}
+
+#sign-up-btn{
+	margin-left: 40%;
+}
