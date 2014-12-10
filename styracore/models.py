@@ -6,7 +6,6 @@ from django.db import models
 class StyraUser(models.Model):
 
 	# Define properties
-	email_address = models.EmailField(max_length=75)
 	phone_number = models.CharField(max_length=128)
 	first_name = models.CharField(max_length=128)
 	last_name = models.CharField(max_length=128)
