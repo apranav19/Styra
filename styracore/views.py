@@ -56,11 +56,12 @@ def parse_command(command_str):
 	and will proceed to either register the user
 '''
 def register_user(user_phone_number, details):
+	resp_msgs = []
 	'''
 		Validate if phone number has been registered
 	'''
 	if len(StyraUser.objects.filter(phone_number=user_phone_number)) > 0:
-		return "Looks like this phone number has already been registered"
+		return ["Looks like this phone number has already been registered"]
 
 	user_name = None
 	resp = "Thank you for registering"
@@ -72,7 +73,17 @@ def register_user(user_phone_number, details):
 	StyraUser.objects.create(phone_number=user_phone_number, first_name=user_name[0], last_name=user_name[1])
 
 	resp += " " + user_name[0]
-	return resp
+	resp_msgs.append(resp)
+	documentation = "To get started, you can request one of the three commands\n"
+	documentation += "To get a summary of your trips so far,\nTEXT get summary\n\n"
+	documentation += "To get a history of your recent trips,\nTEXT get history\n\n"
+	documentation += "To get guided directions, you can request directions for:\n"
+	documentation += "driving, walking, bicycling, and public transit\n\n"
+	documentation += "For example, to get guided directions for public transit\n\n"
+	documentation += "TEXT get directions\n"
+	documentation += "transit:start >your ending address\n"
+	resp_msgs.append(documentation)
+	return resp_msgs
 
 '''
 	Returns true if user is registered, false otherwise
@@ -91,7 +102,7 @@ def fetch_directions(user_phone_number, details):
 		Validate for a registered user
 	'''
 	if not is_registered(user_phone_number):
-		return "Looks like your phone number is not registered. Text Sign Up with your full name."
+		return ["Looks like your phone number is not registered. Text Sign Up with your full name."]
 
 	current_user = current_users[0]
 	parsed_message = details.split(":")
@@ -190,8 +201,9 @@ def test_text(request):
 		If registration was requested
 	'''
 	if command_content == 'sign up':
-		resp_msg = register_user(request.GET['From'], message_content[1])
-		r.message(resp_msg)
+		resp_msgs = register_user(request.GET['From'], message_content[1])
+		for msg in resp_msgs:
+			r.message(msg)
 		return r
 
 	'''
